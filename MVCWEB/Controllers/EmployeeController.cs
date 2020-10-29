@@ -18,6 +18,8 @@ namespace MVCWEB.Controllers
             mylist = response.Content.ReadAsAsync<IEnumerable<mvcEmployeeModel>>().Result;
             return View(mylist);
         }
+
+        //add function
         public ActionResult Add()
         {
             return View();
@@ -31,6 +33,7 @@ namespace MVCWEB.Controllers
 
             return RedirectToAction("Index");
         }
+        //edite function
 
         public ActionResult Edite(int id)
         {
@@ -48,6 +51,7 @@ namespace MVCWEB.Controllers
 
             return RedirectToAction("Index");
         }
+        //delete function
         public ActionResult Delete(int id)
         {
             HttpResponseMessage response = GlobalVariables.webclientApi.DeleteAsync("Employees/" + id.ToString()).Result;
