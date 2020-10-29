@@ -18,36 +18,36 @@ namespace MVCWEB.Controllers
             mylist = response.Content.ReadAsAsync<IEnumerable<mvcEmployeeModel>>().Result;
             return View(mylist);
         }
-        public ActionResult AddOrEdite(int id=0)
+        public ActionResult Add()
         {
-            if (id==0)
-            {
-                return View();
-            }
-            else
-            {
-                HttpResponseMessage response = GlobalVariables.webclientApi.GetAsync("Employees/" + id.ToString()).Result;
-                var responsed = response.Content.ReadAsAsync<mvcEmployeeModel>().Result;
-                return View(responsed);
-            }
-            
+            return View();
         }
+
         [HttpPost]
-        public ActionResult AddOrEdite(mvcEmployeeModel emp)
+        public ActionResult Add(mvcEmployeeModel emp)
         {
-            if (emp.EmployeeID==0)
-            {
-                HttpResponseMessage response = GlobalVariables.webclientApi.PostAsJsonAsync("Employees", emp).Result;
-                TempData["Message"] = "Save Successfully ";
-            }
-            else
-            {
-                HttpResponseMessage response = GlobalVariables.webclientApi.PutAsJsonAsync("Employees/" + emp.EmployeeID, emp).Result;
-                TempData["Message"] = "Update Successfully ";
-            }
+            HttpResponseMessage response = GlobalVariables.webclientApi.PostAsJsonAsync("Employees", emp).Result;
+            TempData["Message"] = "Save Successfully ";
+
             return RedirectToAction("Index");
         }
 
+        public ActionResult Edite(int id)
+        {
+            HttpResponseMessage response = GlobalVariables.webclientApi.GetAsync("Employees/" + id.ToString()).Result;
+            var responsed = response.Content.ReadAsAsync<mvcEmployeeModel>().Result;
+            return View(responsed);
+        }
+
+        [HttpPost]
+        public ActionResult Edite(mvcEmployeeModel emp)
+        {
+
+            HttpResponseMessage response = GlobalVariables.webclientApi.PutAsJsonAsync("Employees/" + emp.EmployeeID, emp).Result;
+            TempData["Message"] = "Update Successfully ";
+
+            return RedirectToAction("Index");
+        }
         public ActionResult Delete(int id)
         {
             HttpResponseMessage response = GlobalVariables.webclientApi.DeleteAsync("Employees/" + id.ToString()).Result;
